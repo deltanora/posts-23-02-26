@@ -17,9 +17,50 @@ class PostController extends Controller
     public function store(Request $request){
         Post::create([
             'title'=> $request->input('title'),
-            'content'=> $request->input('content'),
+            'content'=> $request->input('author'),
         ]);
-        return "sucess";
+        return "succes";
     }
-}
 
+    public function index(){
+        $posts = Post::all();
+
+        return view("posts.index", ["posts"=> $posts]);
+
+    }
+
+     public function show($id){
+        $post = Post::find($id);
+
+        return view("posts.show", ["post"=> $post]);
+
+    }
+
+    public function edit($id){
+
+        $post = Post::find($id);
+        return view('posts.edit', ['singlePost'=> $post]);
+
+    }
+
+    public function update(Request $request, $id){
+
+        $post = Post::find($id);
+        $post->update([
+            'title'=> $request->input('title'),
+            'content'=> $request->input('author'),
+        ]);
+
+        return "update succesfull";
+
+    }
+
+    public function destroy($id){
+        $post = Post::find($id);
+        $post->delete();
+
+        return "Post with id " . $post->id . "deleted";
+
+    }
+
+}
